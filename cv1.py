@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+img = cv2.imread("cvPedropPascal.jpg")
+grey= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+cv2.imshow("greyscale image",grey)
+cv2.waitKey()
+blur= cv2.medianBlur(grey,3)
+cv2.imshow("blurred image",blur)
+cv2.waitKey()
+lap=cv2.Laplacian(blur,cv2.CV_8U,7)
+cv2.imshow("Laplacian image",lap)
+cv2.waitKey()
+ret, lapthreshold=cv2.threshold(lap, 25, 255, cv2.THRESH_BINARY_INV)
+cv2.imshow("threshold image",lapthreshold)
+cv2.waitKey()
+bil= img.copy()
+for i in range (10):
+    bil= cv2.bilateralFilter(bil,3,50,50)
+cv2.imshow("bilateral image",bil)
+cv2.waitKey()
+cartoon_effect = cv2.bitwise_and(bil, bil, mask=lapthreshold)
+cv2.imshow("cartoon image",cartoon_effect)
+cv2.waitKey()
